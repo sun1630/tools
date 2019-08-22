@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<style>
+    /* img {
+        position: absolute;
+        clip: rect(0px 500px 500px 20px)
+    } */
+
+    .gray-img,
+    .color-img,
+    .background-img {
+        width: 500px;
+        height: 400px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        clip: rect(0px 500px 500px 0px);
+        /* 图片裁剪 */
+    }
+
+    .gray-img {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+    }
+</style>
+<script>
+    window.onload = function () {
+        var maxWidth = 500; // 图片宽度 px
+        var offsetWidth = 1; // 每次裁剪的像素 px
+        var execTime = 20; // 定时器执行时间间隔 默认 毫秒
+        var width = 0; 
+        var bgElem = document.querySelector('.background-img');
+        var grayElem = document.querySelector('.gray-img');
+        var flag = 0; // 标识当前裁剪的元素 0 灰色背景，1 灰色图片，2 正常图片
+
+        // 定时器， 每1000毫秒，执行一次
+        var imgInterval = setInterval(function () {
+            width = width + offsetWidth;
+            console.log("当前要裁剪的宽度：" + width + "px,当前裁剪的图片：" + flag);
+            //  裁剪灰色背景
+            if (width <= maxWidth && flag == 0) {
+                changeSub(bgElem, width);
+                // 灰色背景已经全部裁剪，重置参数
+                if (width == maxWidth) {
+                    width = 0;
+                    flag = 1;
+                }
+            } else {
+                //  裁剪灰色图片
+                if (width <= maxWidth && flag == 1) {
+                    changeSub(grayElem, width);
+                } else {
+                    // 已经全部裁剪，重置参数
+                    width = 0;
+                    flag = 2;
+                }
+            }
+
+            if (flag == 2) {
+                // 删除定时器，如果需要循环执行，把图片剪裁区域放开，即可
+                console.log("删除定时器，如果需要循环执行，把图片剪裁区域放开，即可");
+                clearInterval(imgInterval);
+            }
+        }, execTime);
+    }
+    /** img逐渐消失 */
+    function changeSub(elelment, width) {
+        elelment.style.clip = "rect(0px 500px 400px " + width + "px)";
+    }
+</script>
+
+<body>
+    <div class="main-box">
+        <!-- 彩色图片 -->
+        <img class="color-img" src="http://pic41.nipic.com/20140508/18609517_112216473140_2.jpg" />
+        <!-- 灰度图片 -->
+        <img class="gray-img" src="http://pic41.nipic.com/20140508/18609517_112216473140_2.jpg" />
+        <!-- 灰色背景 -->
+        <img class="background-img"
+            src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=554768013,2033880689&fm=26&gp=0.jpg" />
+    </div>
+</body>
+
+</html>
