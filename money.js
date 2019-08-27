@@ -43,7 +43,12 @@ function format(value, decimalPlaces) {
                     if (decimal.length > decimalPlaces) {
                         isCarrt = true;
                         decimal = decimal.substr(1, decimalPlaces);
-
+                    }
+                    if (decimal.length < decimalPlaces) {
+                        var decimalDiff = decimalPlaces - decimal.length;
+                        for (var i = 0; i < decimalDiff; i++) {
+                            decimal = '0' + decimal;
+                        }
                     }
                 } else {
                     decimal = decimal.substr(0, decimalPlaces);
@@ -117,10 +122,4 @@ function integerHandle(integer, isCarrt) {
     }
     return realValue;
 }
-
-var a = format('8495779404.030');//format('11234567890123456789.874', 9);
-//var a = format('219661430.996');//format('11234567890123456789.874', 9);
-//var a = format('998.996');//format('11234567890123456789.874', 9);
-console.log(a);
-
 
